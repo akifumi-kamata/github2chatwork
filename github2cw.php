@@ -1,11 +1,11 @@
 <?php
 /**
-* Github‚©‚ç‚ÌPull Request‚ðchatwork‚É’Ê’m‚µ‚Ü‚·B
-* ŠÈˆÕ”Å‚È‚Ì‚ÅAƒRƒƒ“ƒg’Ê’m‚È‚Ç‚Í‘Î‰ž‚µ‚Ä‚¢‚Ü‚¹‚ñB
+* Githubã‹ã‚‰ã®Pull Requestã‚’chatworkã«é€šçŸ¥ã—ã¾ã™ã€‚
+* ç°¡æ˜“ç‰ˆãªã®ã§ã€ã‚³ãƒ¡ãƒ³ãƒˆé€šçŸ¥ãªã©ã¯å¯¾å¿œã—ã¦ã„ã¾ã›ã‚“ã€‚
 */
 
 
-// APIƒL[‚ðÝ’è‚µ‚Ä‚­‚¾‚³‚¢
+// APIã‚­ãƒ¼ã‚’è¨­å®šã—ã¦ãã ã•ã„
 define("CHATWORK_APIKEY",'YOUR_APIKEY');
 
 
@@ -16,7 +16,7 @@ define('CW_ENDPOINT_URL',"https://api.chatwork.com/v1/rooms/%%ROOM_ID%%/messages
 
 $cwRoomId = $_REQUEST['rid'];
 
-// Payload‚ðŽæ“¾
+// Payloadã‚’å–å¾—
 $payload = file_get_contents('php://input');
 
 $ary = json_decode($payload,true);
@@ -37,7 +37,7 @@ if(isset($ary["pull_request"])){
 	error_log("merged_at:".  $merged_at  );
 	*/
 
-	if($action == 'opened'){
+	if($action == 'opened' || $action == 'synchronize'){
 		$type = "GitHub - Created Pull Request.";
 	} elseif($action == "closed"){
 		if($merged_at){
@@ -46,7 +46,7 @@ if(isset($ary["pull_request"])){
 			$type = "GitHub - Closed Pull Request.";
 		}
 	} elseif($action == "created"){
-		print "Not message send. ƒRƒƒ“ƒg’Ê’m‚Í”ñ‘Î‰ž‚Å‚·B";
+		print "Not message send. ã‚³ãƒ¡ãƒ³ãƒˆé€šçŸ¥ã¯éžå¯¾å¿œã§ã™ã€‚";
 		exit;
 
 	} else{
@@ -54,9 +54,9 @@ if(isset($ary["pull_request"])){
 		exit;
 	}
 
-	$message = "----------\n".$type."\n".$url."\n by ".$user."\n".$title;
+	$message = $type."\n".$url."\n by ".$user."\n".$title;
 
-	// ƒƒbƒZ[ƒW‚ð‘—M
+	// ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’é€ä¿¡
 	chatworkApiSendMessage($cwRoomId,$message);
 
 	print "Message send.";
@@ -67,8 +67,8 @@ exit;
 //------------------------------------------------------------------------------
 
 /**
-* chatworkAPI˜AŒg
-* ƒƒbƒZ[ƒW‚Ì‘—M
+* chatworkAPIé€£æº
+* ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®é€ä¿¡
 */
 function chatworkApiSendMessage($cwRoomId,$message){
 
@@ -92,7 +92,7 @@ function chatworkApiSendMessage($cwRoomId,$message){
 
 	$context = stream_context_create($opts);
 
-	// chatwork‚ÉƒƒbƒZ[ƒW‘—M
+	// chatworkã«ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸é€ä¿¡
 	$resutl = file_get_contents($endpointURL, false, $context);
 
 	print "REQUESTED.";
