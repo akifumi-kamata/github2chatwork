@@ -24,7 +24,7 @@ $ary = json_decode($payload,true);
 if(isset($ary["pull_request"])){
 
 	$action    = $ary["action"];
-	$url       = $ary["pull_request"]["url"];
+	$url       = $ary["pull_request"]["_links"]["html"]["href"];
 	$title     = $ary["pull_request"]["title"];
 	$user      = $ary["pull_request"]["user"]["login"];
 	$merged_at = $ary["pull_request"]["merged_at"];
