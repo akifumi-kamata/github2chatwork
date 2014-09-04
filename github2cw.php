@@ -37,8 +37,10 @@ if(isset($ary["pull_request"])){
 	error_log("merged_at:".  $merged_at  );
 	*/
 
-	if($action == 'opened' || $action == 'synchronize'){
-		$type = "GitHub - Created Pull Request.";
+	if($action == 'opened'){
+                $type = "GitHub - Created Pull Request.";
+        } elseif($action == 'synchronize'){
+                $type = "GitHub - Update Pull Request.";
 	} elseif($action == "closed"){
 		if($merged_at){
 			$type = "GitHub - Merged Pull Request.";
